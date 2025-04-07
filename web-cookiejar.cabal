@@ -4,7 +4,7 @@ version:            0.1.0.0
 synopsis:           Parsing/printing of persistent web cookies
 description:
   `web-cookiejar` provides parsing and printing functions that read and write web
-  cookies stored in a Netscape/Mozilla cookie jar file format.  This is also the
+  cookies stored in the Netscape/Mozilla cookie jar file format.  This is also the
   format used by curl.
 
   Parsing and printing do not form a full data roundtrip because the cookies are
