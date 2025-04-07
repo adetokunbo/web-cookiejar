@@ -35,6 +35,7 @@ import Web.CookieJar
 {- Update any cookies in a Response in the cookie jar -}
 saveCookies :: FilePath -> Response a -> Request -> IO (Response a)
 saveCookies cookieJarPath resp req = do
+  now <- getCurrentTime
   readJar cookieJarPath >>= \case
     Left e -> fail $ show e
     Right old -> do
