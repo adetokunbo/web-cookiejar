@@ -1,12 +1,15 @@
 cabal-version:      3.0
 name:               web-cookiejar
 version:            0.1.0.0
-synopsis:           A terse description of this package
+synopsis:           Parsing/printing of persistent web cookies
 description:
-  Expands on the terse description above; here is how to do a link [TmpProc](https://hackage.haskell.org/package/tmp-proc-0.5.3.0/docs/System-TmpProc.html)
+  `web-cookiejar` provides parsing and printing functions that read and write web
+  cookies stored in a Netscape/Mozilla cookie jar file format.  This is also the
+  format used by curl.
 
-  - a fine point
-  - an even better one
+  Parsing and printing do not form a full data roundtrip because the cookies are
+  parsed into the data type [Cookie](https://hackage.haskell.org/package/http-client/docs/Network-HTTP-Client.html>),
+  which has additional fields not present in the cookie jar file format.
 
 license:            BSD-3-Clause
 license-file:       LICENSE
@@ -29,8 +32,11 @@ library
   exposed-modules:  Web.Cookie.Jar
   hs-source-dirs:   src
   build-depends:
-    , base                        >=4.10 && <5
-    , hspec                       >=2.7.0 && <2.12.0
+    , attoparsec           >=0.14.4 && <0.15
+    , base                 >=4.10 && <5
+    , bytestring           >=0.10.8 && <0.11 || >=0.11.3 && <0.13
+    , http-client          >=0.5 && <0.8
+    , time                 >=1.8 && <1.15
 
   default-language: Haskell2010
   ghc-options:      -Wall -Wincomplete-uni-patterns -Wpartial-fields -fwarn-tabs
@@ -44,7 +50,11 @@ test-suite test
   ghc-options:      -threaded -rtsopts -with-rtsopts=-N -Wall -fwarn-tabs
   build-depends:
     , base
-    , hspec           >=2.1
-    , QuickCheck
+    , bytestring
+    , hspec                >=2.7.0 && <2.12.0
+    , http-client
+    , QuickCheck           >= 2.13 && < 2.16
+    , temporary            >= 1.2 && < 1.4
+    , time
     , web-cookiejar
 
