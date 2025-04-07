@@ -1,5 +1,5 @@
 # web-cookiejar
-[![GitHub CI](https://github.com/adetokunbo/web-cookiejar/actions/workflows/ci.yml/badge.svg)](https://github.com/adetokunbo/web-cookiejar/actions)
+[![GitHub CI](https://github.com/adetokunbo/web-cookiejar/actions/workflows/cabal.yml/badge.svg)](https://github.com/adetokunbo/web-cookiejar/actions)
 [![Stackage Nightly](http://stackage.org/package/web-cookiejar/badge/nightly)](http://stackage.org/nightly/package/web-cookiejar)
 [![Hackage][hackage-badge]][hackage]
 [![BSD3](https://img.shields.io/badge/license-BSD3-green.svg?dummy)](https://github.com/adetokunbo/web-cookiejar/blob/master/LICENSE)
