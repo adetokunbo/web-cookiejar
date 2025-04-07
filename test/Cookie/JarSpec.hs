@@ -77,7 +77,7 @@ prop_almostRoundtripSavedJars writer root = monadicIO $ do
   (jarBase, jar) <- pick genJarWithPath
   let jarPath = root ++ "/" ++ jarBase
 
-  -- this match is incomplete, that's ok, the test fails if the produces a Left
+  -- this match is incomplete, that's ok, the test fails if it produces a Left
   Right jar' <- run $ do
     writer jarPath jar
     readJar jarPath
