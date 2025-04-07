@@ -32,9 +32,9 @@ import Web.CookieJar
   , writeNetscapeJar
   )
   
-{- Update any cookies in a Response in the cookie jar -}
-saveCookies :: FilePath -> Response a -> Request -> IO (Response a)
-saveCookies cookieJarPath resp req = do
+{- Update the cookie jar to reflect any cookies in a Response -}
+persistCookies :: FilePath -> Response a -> Request -> IO (Response a)
+persistCookies cookieJarPath resp req = do
   now <- getCurrentTime
   readJar cookieJarPath >>= \case
     Left e -> fail $ show e
