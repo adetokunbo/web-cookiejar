@@ -9,8 +9,8 @@ SPDX-License-Identifier: BSD3
 module Cookie.JarSpec (spec) where
 
 import Data.ByteString (ByteString)
-import qualified Data.ByteString as BS
 import Data.ByteString.Builder (Builder, toLazyByteString)
+import qualified Data.ByteString.Lazy as L
 import Data.List (sortBy)
 import Data.String (fromString)
 import Data.Time (UTCTime)
@@ -116,7 +116,7 @@ prop_almostRoundtripCookie =
 
 
 asByteString :: Builder -> ByteString
-asByteString = BS.toStrict . toLazyByteString
+asByteString = L.toStrict . toLazyByteString
 
 
 cookieWithLine :: Cookie -> (Cookie, ByteString)
