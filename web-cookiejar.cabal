@@ -3,13 +3,12 @@ name:               web-cookiejar
 version:            0.1.0.0
 synopsis:           Parsing/printing of persistent web cookies
 description:
-  `web-cookiejar` provides parsing and printing functions that read and write web
-  cookies stored in the Netscape/Mozilla cookie jar file format.  This is also the
-  format used by curl.
+  A library that provides parsing and printing functions that read and write web
+  cookies stored in the Netscape/Mozilla cookie jar file format; also the format
+  used by curl.
 
-  Parsing and printing do not form a full data roundtrip because the cookies are
-  parsed into the data type [Cookie](https://hackage.haskell.org/package/http-client/docs/Network-HTTP-Client.html>),
-  which has additional fields not present in the cookie jar file format.
+  See the [README](https://github.com/adetokunbo/web-cookiejar?tab=readme-ov-file#web-cookiejar)
+  for a simple usage example
 
 license:            BSD-3-Clause
 license-file:       LICENSE

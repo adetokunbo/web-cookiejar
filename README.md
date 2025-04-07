@@ -14,6 +14,36 @@ additional fields not present in the cookie jar file format.
 In addition to the parsing and printing functions, it provides utility functions
 for reading and writing cookie jar files using that only depend on the haskell
 base package
+
+## Usage Example
+
+This example demonstrates a basic use case: updating the cookie jar to reflect
+any cookies in a response 
+
+```haskell
+import Data.Time (getCurrentTime)
+import Network.Http.Client
+  ( Response
+  , Request
+  , updateCookieJar
+  )
+import Web.CookieJar
+  ( readJar
+  , writeNetscapeJar
+  )
+  
+{- Update the cookie jar to reflect any cookies in a Response -}
+persistCookies :: FilePath -> Response a -> Request -> IO (Response a)
+persistCookies cookieJarPath resp req = do
+  now <- getCurrentTime
+  readJar cookieJarPath >>= \case
+    Left e -> fail $ show e
+    Right old -> do
+      let (updated, resp_) = updateCookieJar resp req now old
+      writeNetscapeJar cookieJarPath updated
+      pure resp_
+
+```
  
 ## Similar libraries
 
