@@ -3,11 +3,12 @@
 
 {- | 'Parser' for a Netscape/Mozilla cookie jar
 
-Provides parsing functions and @'Builder's@ that allows an incomplete roundtrip
-with the parser.
+Provides parsing functions that parse the Netscape/Mozilla cookie jar file
+format, along wiht @'Builder's@ that provide an incomplete roundtrip with the
+parser.
 
 The roundtrip is incomplete because some of the fields in @Cookie@ are not saved
-in the Netscape/Mozilla cookie jar, as described by `cookieBuilder`.
+in the Netscape/Mozilla cookie jar; see `cookieBuilder`.
 -}
 module Web.Cookie.Jar
   ( -- * read/write Cookie Jar files
@@ -29,7 +30,7 @@ module Web.Cookie.Jar
   , jarBuilder'
   , cookieBuilder
 
-    -- ** re-exports
+    -- * re-exports
   , parseOnly
   )
 where
