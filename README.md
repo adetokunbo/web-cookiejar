@@ -5,7 +5,7 @@
 [![BSD3](https://img.shields.io/badge/license-BSD3-green.svg?dummy)](https://github.com/adetokunbo/web-cookiejar/blob/master/LICENSE)
 
 `web-cookiejar` provides parsing and printing functions that read and write web
-cookies stored in a Netscape/Mozilla cookie jar file format.
+cookies stored in file in the Netscape/Mozilla cookie jar file format.
 
 Parsing and printing do not form a full data roundtrip because the cookies are
 parsed into the data type [Cookie] of the [http-client] library, which has
