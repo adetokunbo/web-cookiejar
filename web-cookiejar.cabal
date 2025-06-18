@@ -52,7 +52,7 @@ test-suite test
     , bytestring
     , hspec                >=2.7.0 && <2.12.0
     , http-client
-    , QuickCheck           >= 2.13 && < 2.16
+    , QuickCheck           >= 2.13 && < 2.18
     , temporary            >= 1.2 && < 1.4
     , time
     , web-cookiejar
