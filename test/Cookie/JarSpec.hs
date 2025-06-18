@@ -91,7 +91,9 @@ prop_almostRoundtripCookieJar toBuilder =
 
 
 cookieJarWithX
-  :: (CookieJar -> Builder) -> CookieJar -> (CookieJar, ByteString, Either String CookieJar)
+  :: (CookieJar -> Builder)
+  -> CookieJar
+  -> (CookieJar, ByteString, Either String CookieJar)
 cookieJarWithX toBuilder j =
   let txt = asByteString $ toBuilder j
    in (j, txt, parseCookieJar txt)
