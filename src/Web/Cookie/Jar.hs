@@ -11,11 +11,18 @@ The roundtrip is incomplete because some of the fields in @Cookie@ are not saved
 in the Netscape/Mozilla cookie jar; see `cookieBuilder`.
 -}
 module Web.Cookie.Jar
-  ( -- * read/write Cookie Jar files
+  ( -- * read and write files
     writeJar
   , writeJar'
   , writeNetscapeJar
   , readJar
+  , readJarX
+  , BadJarFile
+
+    -- * update HTTP messages
+  , addCookiesFromFile
+  , saveCookies
+  , usingCookiesFromFile
 
     -- * Cookie jar format
 
@@ -36,6 +43,7 @@ module Web.Cookie.Jar
 where
 
 import Control.Applicative ((<|>))
+import Control.Exception (Exception, throwIO)
 import Control.Monad (void)
 import Data.Attoparsec.ByteString.Char8
   ( Parser
@@ -51,7 +59,7 @@ import Data.Attoparsec.ByteString.Char8
   , try
   )
 import Data.ByteString (ByteString)
-import qualified Data.ByteString as B
+import qualified Data.ByteString as BS
 import Data.ByteString.Builder
   ( Builder
   , byteString
@@ -61,6 +69,7 @@ import Data.ByteString.Builder
   )
 import qualified Data.ByteString.Lazy as L
 import Data.Char (ord)
+import Data.Time (getCurrentTime)
 import Data.Time.Clock.POSIX
   ( posixSecondsToUTCTime
   , utcTimeToPOSIXSeconds
@@ -68,9 +77,72 @@ import Data.Time.Clock.POSIX
 import Network.HTTP.Client
   ( Cookie (..)
   , CookieJar
+  , Request
+  , Response
   , createCookieJar
   , destroyCookieJar
+  , insertCookiesIntoRequest
+  , updateCookieJar
   )
+import System.Directory (doesFileExist)
+
+
+-- | Perform a HTTP request first loading then saving any matching cookies from a cookie file
+usingCookiesFromFile :: FilePath -> Request -> (Request -> IO (Response b)) -> IO (Response b)
+usingCookiesFromFile jarPath req doReq = do
+  req' <- addCookiesFromFile jarPath req
+  resp <- doReq req'
+  saveCookies jarPath resp req'
+
+
+{- | Add any appropriate Cookies from a cookie file to a @Request@
+
+ - if the file is absent, no update occurs
+ - throws @BadJarFile@ if the file can't be parsed
+-}
+addCookiesFromFile
+  :: FilePath
+  -- ^ path to the cookie file
+  -> Request
+  -> IO Request
+addCookiesFromFile dataPath req = do
+  pathExists <- doesFileExist dataPath
+  if not pathExists
+    then pure req
+    else do
+      now <- getCurrentTime
+      readJarX dataPath >>= \jar -> do
+        let (req', _jar') = insertCookiesIntoRequest req jar now
+        pure req'
+
+
+{- | Update the cookie file with any cookies in the response
+
+When the file does not exist, it's created as long as the parent directory
+exists and permits the file to be written
+
+The output is saved to the cookie file using 'writeJar'
+
+throws an exception if:
+  - cannot write due to permissions or parent directory not existing
+  - the file exists, but cannot be parsed into Cookies
+-}
+saveCookies :: FilePath -> Response a -> Request -> IO (Response a)
+saveCookies dataPath resp req = do
+  pathExists <- doesFileExist dataPath
+  old <- if pathExists then readJarX dataPath else pure (createCookieJar [])
+  now <- getCurrentTime
+  let (updated, resp_) = updateCookieJar resp req now old
+  writeJar dataPath updated
+  pure resp_
+
+
+-- | Reasons a jar file could not be loaded
+data BadJarFile = InvalidJar
+  deriving (Eq, Show)
+
+
+instance Exception BadJarFile
 
 
 -- | Parse a @ByteString@ containing a cookie jar in the Netscape/Mozilla format
@@ -185,7 +257,14 @@ writeNetscapeJar = writeJar' netscapeHeader
 
 -- | Read a Cookie Jar from a file.
 readJar :: FilePath -> IO (Either String CookieJar)
-readJar = fmap parseCookieJar . B.readFile
+readJar = fmap parseCookieJar . BS.readFile
+
+
+-- | Like 'readJar', but throws @BadJarFile@ in @IO@ if the read fails
+readJarX :: FilePath -> IO CookieJar
+readJarX p =
+  let handleErr = either (const $ throwIO InvalidJar) pure
+   in readJar p >>= handleErr
 
 
 {- | Builder for one cookie; generates a single line in the Cookie Jar file format
