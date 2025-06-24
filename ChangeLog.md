@@ -2,6 +2,11 @@
 
 `web-cookiejar` uses [PVP Versioning][1].
 
+
+## 0.1.2.0 -- 2025-06-24
+
+* Export constructor for BadJarFile; correcting a mistake in 0.1.1.0
+
 ## 0.1.1.0 -- 2025-06-23
 
 * Relax the upper bound of the QuickCheck test dependency

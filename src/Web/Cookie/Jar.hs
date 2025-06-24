@@ -17,7 +17,7 @@ module Web.Cookie.Jar
   , writeNetscapeJar
   , readJar
   , readJarX
-  , BadJarFile
+  , BadJarFile (..)
 
     -- * update HTTP messages
   , addCookiesFromFile
