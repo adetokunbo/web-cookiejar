@@ -39,5 +39,5 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.ghc }}-
       - run: cabal build
-      - run: cabal test
+      - run: cabal test :all
       - run: cabal sdist
