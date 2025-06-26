@@ -27,11 +27,10 @@ import Network.Http.Client
   , Request
   , Manager
   , httpLbs
-  , updateCookieJar
   )
 import Web.CookieJar
   (usingCookiesFromFile')
-  
+
 {- Load/save and relevant cookies when making simple request using http-client. -}
 persistCookies :: Manager -> FilePath -> Request -> IO (Response a)
 persistCookies manager cookieJarPath req = do
@@ -39,7 +38,7 @@ persistCookies manager cookieJarPath req = do
   httpLbs' req
 
 ```
- 
+
 ## Similar libraries
 
 The parsing and printing in `web-cookiejar` are nearly identical to that in
