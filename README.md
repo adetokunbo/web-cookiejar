@@ -25,23 +25,18 @@ import Data.Time (getCurrentTime)
 import Network.Http.Client
   ( Response
   , Request
+  , Manager
+  , httpLbs
   , updateCookieJar
   )
 import Web.CookieJar
-  ( readJar
-  , writeNetscapeJar
-  )
+  (usingCookiesFromFile')
   
-{- Update the cookie jar to reflect any cookies in a Response -}
-persistCookies :: FilePath -> Response a -> Request -> IO (Response a)
-persistCookies cookieJarPath resp req = do
-  now <- getCurrentTime
-  readJar cookieJarPath >>= \case
-    Left e -> fail $ show e
-    Right old -> do
-      let (updated, resp_) = updateCookieJar resp req now old
-      writeNetscapeJar cookieJarPath updated
-      pure resp_
+{- Load/save and relevant cookies when making simple request using http-client. -}
+persistCookies :: Manager -> FilePath -> Request -> IO (Response a)
+persistCookies manager cookieJarPath req = do
+  let httpLbs' = usingCookiesFromFile' cookiePath $ flip httpLbs manager
+  httpLbs' req
 
 ```
  
