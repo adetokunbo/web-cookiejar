@@ -3,6 +3,11 @@
 `web-cookiejar` uses [PVP Versioning][1].
 
 
+## 0.1.3.0 -- 2025-06-25
+
+* Add usingCookiesFromFile' which reorders args of usingCookiesFromFile for ease
+  of use
+
 ## 0.1.2.0 -- 2025-06-24
 
 * Export constructor for BadJarFile; correcting a mistake in 0.1.1.0

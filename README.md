@@ -18,33 +18,27 @@ base package
 ## Usage Example
 
 This example demonstrates a basic use case: updating the cookie jar to reflect
-any cookies in a response 
+any cookies in a response
 
 ```haskell
 import Data.Time (getCurrentTime)
 import Network.Http.Client
   ( Response
   , Request
-  , updateCookieJar
+  , Manager
+  , httpLbs
   )
 import Web.CookieJar
-  ( readJar
-  , writeNetscapeJar
-  )
-  
-{- Update the cookie jar to reflect any cookies in a Response -}
-persistCookies :: FilePath -> Response a -> Request -> IO (Response a)
-persistCookies cookieJarPath resp req = do
-  now <- getCurrentTime
-  readJar cookieJarPath >>= \case
-    Left e -> fail $ show e
-    Right old -> do
-      let (updated, resp_) = updateCookieJar resp req now old
-      writeNetscapeJar cookieJarPath updated
-      pure resp_
+  (usingCookiesFromFile')
+
+{- Load/save and relevant cookies when making simple request using http-client. -}
+httpWithCookies :: Manager -> FilePath -> Request -> IO (Response a)
+httpWithCookies manager cookieJarPath req = do
+  let httpLbs' = usingCookiesFromFile' cookiePath $ flip httpLbs manager
+  httpLbs' req
 
 ```
- 
+
 ## Similar libraries
 
 The parsing and printing in `web-cookiejar` are nearly identical to that in

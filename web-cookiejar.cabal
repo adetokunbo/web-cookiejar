@@ -1,6 +1,6 @@
 cabal-version:      3.0
 name:               web-cookiejar
-version:            0.1.2.0
+version:            0.1.3.0
 synopsis:           Parsing/printing of persistent web cookies
 description:
   A library that provides parsing and printing functions that read and write web
@@ -58,7 +58,15 @@ test-suite test
     , time
     , web-cookiejar
 
+Flag enable-server-test
+  description: Build server-test
+  default:     False
+
 test-suite server-test 
+  if flag(enable-server-test)
+    buildable: True
+  else
+    buildable: False
   type:             exitcode-stdio-1.0
   main-is:          Spec.hs
   hs-source-dirs:   server-test
