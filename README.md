@@ -32,8 +32,8 @@ import Web.CookieJar
   (usingCookiesFromFile')
 
 {- Load/save and relevant cookies when making simple request using http-client. -}
-persistCookies :: Manager -> FilePath -> Request -> IO (Response a)
-persistCookies manager cookieJarPath req = do
+httpWithCookies :: Manager -> FilePath -> Request -> IO (Response a)
+httpWithCookies manager cookieJarPath req = do
   let httpLbs' = usingCookiesFromFile' cookiePath $ flip httpLbs manager
   httpLbs' req
 

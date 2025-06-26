@@ -5,7 +5,7 @@
 
 Provides:
 
-* parsing functions that parse the Netscape/Mozilla cookie jar file
+* parsing functions that parse the Netscape/Mozilla cookie jar file format
 
 * @'Builder's@ that provide an incomplete roundtrip with the
   parser.
@@ -15,8 +15,8 @@ Provides:
 
 * combinators to ease use with "Network.Http.Client", like 'usingCookiesFromFile'', e.g,
 
-  > persistCookies :: Manager -> FilePath -> Request -> IO (Response a)
-  > persistCookies manager cookieJarPath req = do
+  > httpWithCookies :: Manager -> FilePath -> Request -> IO (Response a)
+  > httpWithCookies manager cookieJarPath req = do
   >   let httpLbs' = usingCookiesFromFile' cookiePath $ flip httpLbs manager
   >   httpLbs' req
 -}
