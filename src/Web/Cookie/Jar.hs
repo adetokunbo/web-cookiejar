@@ -23,6 +23,7 @@ module Web.Cookie.Jar
   , addCookiesFromFile
   , saveCookies
   , usingCookiesFromFile
+  , usingCookiesFromFile'
 
     -- * Cookie jar format
 
@@ -93,6 +94,11 @@ usingCookiesFromFile jarPath req doReq = do
   req' <- addCookiesFromFile jarPath req
   resp <- doReq req'
   saveCookies jarPath resp req'
+
+
+-- | 'usingCookiesFromFile' with arguments re-ordered
+usingCookiesFromFile' :: FilePath -> (Request -> IO (Response b)) -> Request -> IO (Response b)
+usingCookiesFromFile' p = flip (usingCookiesFromFile p)
 
 
 {- | Add any appropriate Cookies from a cookie file to a @Request@

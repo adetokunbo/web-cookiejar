@@ -90,10 +90,9 @@ prop_fetchUsingCookiesUpdatesJar (root, port, manager) = monadicIO $ do
 
 fetch :: FilePath -> Manager -> ByteString -> IO Int
 fetch cookiePath manager url = do
-  let doReq = flip httpLbs manager
-      doReq' = flip (usingCookiesFromFile cookiePath) doReq
+  let doReq = usingCookiesFromFile' cookiePath $ flip httpLbs manager
   rq <- parseRequest $ toS url
-  statusCode . responseStatus <$> doReq' rq
+  statusCode . responseStatus <$> doReq rq
 
 
 genJarWithPath :: Gen (FilePath, CookieJar)
