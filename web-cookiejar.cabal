@@ -58,7 +58,15 @@ test-suite test
     , time
     , web-cookiejar
 
+Flag enable-server-test
+  description: Build server-test
+  default:     False
+
 test-suite server-test 
+  if flag(enable-server-test)
+    buildable: True
+  else
+    buildable: False
   type:             exitcode-stdio-1.0
   main-is:          Spec.hs
   hs-source-dirs:   server-test
