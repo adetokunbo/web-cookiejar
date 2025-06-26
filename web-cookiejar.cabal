@@ -1,6 +1,6 @@
 cabal-version:      3.0
 name:               web-cookiejar
-version:            0.1.2.0
+version:            0.1.3.0
 synopsis:           Parsing/printing of persistent web cookies
 description:
   A library that provides parsing and printing functions that read and write web

@@ -18,7 +18,7 @@ base package
 ## Usage Example
 
 This example demonstrates a basic use case: updating the cookie jar to reflect
-any cookies in a response 
+any cookies in a response
 
 ```haskell
 import Data.Time (getCurrentTime)

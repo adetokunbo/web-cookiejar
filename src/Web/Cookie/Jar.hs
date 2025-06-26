@@ -3,12 +3,22 @@
 
 {- | 'Parser' for a Netscape/Mozilla cookie jar
 
-Provides parsing functions that parse the Netscape/Mozilla cookie jar file
-format, along wiht @'Builder's@ that provide an incomplete roundtrip with the
-parser.
+Provides:
 
-The roundtrip is incomplete because some of the fields in @Cookie@ are not saved
-in the Netscape/Mozilla cookie jar; see `cookieBuilder`.
+* parsing functions that parse the Netscape/Mozilla cookie jar file
+
+* @'Builder's@ that provide an incomplete roundtrip with the
+  parser.
+
+    * __incomplete__ because some of the fields in @Cookie@ are not
+      saved in the Netscape/Mozilla cookie jar; see `cookieBuilder`.
+
+* combinators to ease use with "Network.Http.Client", like 'usingCookiesFromFile'', e.g,
+
+  > persistCookies :: Manager -> FilePath -> Request -> IO (Response a)
+  > persistCookies manager cookieJarPath req = do
+  >   let httpLbs' = usingCookiesFromFile' cookiePath $ flip httpLbs manager
+  >   httpLbs' req
 -}
 module Web.Cookie.Jar
   ( -- * read and write files
@@ -19,7 +29,7 @@ module Web.Cookie.Jar
   , readJarX
   , BadJarFile (..)
 
-    -- * update HTTP messages
+    -- * use with http-client
   , addCookiesFromFile
   , saveCookies
   , usingCookiesFromFile
@@ -130,8 +140,9 @@ exists and permits the file to be written
 The output is saved to the cookie file using 'writeJar'
 
 throws an exception if:
-  - cannot write due to permissions or parent directory not existing
-  - the file exists, but cannot be parsed into Cookies
+
+ - cannot write due to permissions or parent directory not existing
+ - the file exists, but cannot be parsed into Cookies
 -}
 saveCookies :: FilePath -> Response a -> Request -> IO (Response a)
 saveCookies dataPath resp req = do
