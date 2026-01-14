@@ -3,6 +3,10 @@
 `web-cookiejar` uses [PVP Versioning][1].
 
 
+## 0.1.3.1 -- 2026-01-14
+
+* Relax the upper bound of the time dependency
+
 ## 0.1.3.0 -- 2025-06-25
 
 * Add usingCookiesFromFile' which reorders args of usingCookiesFromFile for ease
