@@ -3,6 +3,10 @@
 `web-cookiejar` uses [PVP Versioning][1].
 
 
+## 0.1.3.2 -- 2026-06-20
+
+* Relax the upper bound of the QuickCheck dependency
+
 ## 0.1.3.1 -- 2026-01-14
 
 * Relax the upper bound of the time dependency
